@@ -21,5 +21,4 @@ An app requires OS X Lion 10.7 and up.
 ## Download
 
 You can download a .app file from the [link](https://github.com/ahmed-shehata/AppPolice-Remember/blob/master/AppPolice.app.zip?raw=true).
-=======
 
