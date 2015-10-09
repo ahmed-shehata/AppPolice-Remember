@@ -18,6 +18,7 @@
 {
 	@private;
 	CMMenu *_mainMenu;
+    NSMutableDictionary* _allApplicationsDict;
 	NSMutableArray *_runningApplications;
 	NSMutableArray *_runningSystemProcesses;
 	int _sortKey;

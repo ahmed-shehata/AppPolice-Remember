@@ -38,6 +38,11 @@
 - (id)init {
 	self = [super init];
 	if (self) {
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+         _allApplicationsDict = [[NSMutableDictionary alloc]init];
+        _allApplicationsDict = [NSMutableDictionary dictionaryWithDictionary:[prefs objectForKey:@"allApplicationsDict"]];
+        if (_allApplicationsDict ==nil)
+        _allApplicationsDict = [[NSMutableDictionary alloc]init];
 		[NSBundle loadNibNamed:@"AppInspector" owner:self];
 		[NSBundle loadNibNamed:@"PopoverContentView" owner:self];
 	}
@@ -277,6 +282,11 @@
  *
  */
 - (void)setProcessLimit:(float)limit {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    _allApplicationsDict = [[NSMutableDictionary alloc]init];
+    _allApplicationsDict = [NSMutableDictionary dictionaryWithDictionary:[prefs objectForKey:@"allApplicationsDict"]];
+    if (_allApplicationsDict ==nil)
+        _allApplicationsDict = [[NSMutableDictionary alloc]init];
 	// Update the attached-to menu item state
 	if (! _attachedToItem)
 		return;
@@ -286,9 +296,11 @@
 	
 	NSMutableDictionary *applicationInfo = [_attachedToItem representedObject];
 	[applicationInfo setObject:[NSNumber numberWithFloat:limit] forKey:APApplicationInfoLimitKey];
-	
+    [_allApplicationsDict setObject:[applicationInfo objectForKey:APApplicationInfoLimitKey] forKey:[applicationInfo objectForKey:@"appInfoNameKey"]];
 	NSNumber *pid_n = [applicationInfo objectForKey:APApplicationInfoPidKey];
 	pid_t pid = [pid_n intValue];
+    [prefs setObject:_allApplicationsDict forKey:@"allApplicationsDict"];
+    [prefs synchronize];
 	// Set limit for process and start limiter in case it's not already running
 	proc_cpulim_set(pid, limit);
 //	proc_cpulim_resume();
@@ -302,6 +314,8 @@
 											   postingStyle:NSPostNow
 											   coalesceMask:NSNotificationCoalescingOnName
 												   forModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+    
+   
 
 }
 

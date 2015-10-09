@@ -62,6 +62,7 @@
 //- (void)mouseUp:(id)sender;
 
 @property (assign) NSMutableDictionary *applicationInfo;
+@property (assign) NSMutableDictionary* allApplicationsDict;
 @property (assign, nonatomic) CMMenuItem *attachedToItem;
 
 
